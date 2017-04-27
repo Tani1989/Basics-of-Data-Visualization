@@ -1,0 +1,138 @@
+#ggplot introduction.
+#It simplifies the data visualization using high level language.
+#ggplot is based on grammar of graphics, you can make many types of graphs with only few components:
+#1) a data 2) a set of geoms(visual marks that represent a data set) 3) coordinate sytem
+
+# To use the ggplot we must install the ggplot2 package
+install.packages("ggplot2")
+library(ggplot2)
+# as we are using iris dataset so we have to load that dataset
+datasets::iris
+#BASIC SYNTAX FOR GGPLOT2
+
+ggplot(data = iris,
+aes(
+  x = Petal.Length,
+  y = Petal.Width)) +
+  geom_point(shape = 23,fill="pink",size=3)+
+  ggtitle("Simple ggplot") +
+  xlab("Petal Length") +
+  ylab ("Petal Width")
+
+# In ggplot2 you are adding various layers to your graph.
+#1) Aesthetics(aes) - In ggplot aesthetic means "something you can see" like, 
+#. position (i.e., on the x and y axes)
+#. color ("outside" color)
+#. fill ("inside" color)
+#. shape (of points)
+#. linetype
+#. size
+# Aesthetics basically maps the variables in the dataset into the aesthetic properties of geom like size,
+# color, x&y locations.
+
+#to save the plot
+#ggsave() is a convenient function for saving a plot. It defaults to saving the last plot that you displayed, using the size of the current graphics device. 
+#It also guesses the type of graphics device from the extension.
+ggsave("plot.png", plot = last_plot(), device = NULL, path = "F:/pluralprac",
+        scale = 1, width = 5, height = 5, units = c("in", "cm", "mm"),
+        dpi = 300, limitsize = TRUE)
+
+#device - Device to use. Can be either be a device function (e.g. png), or one of "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf" (windows only).
+#scale -	Multiplicative scaling factor.
+#Plot size in units ("in", "cm", or "mm"). If not supplied, uses the size of current graphics device.
+#dpi-Plot resolution. Applies only to raster output types.
+#limitsize-When TRUE (the default), ggsave will not save images larger than 50x50 inches, to prevent the common error of specifying dimensions in pixels.
+
+
+#STATS(Statistical Transformation) - alternative way to build a layer
+#stats are not required to produce a plot, but can greatly enhance the final plot.
+#some plots visualize atransformation of the original data set.
+#These objects summarize the data in different ways such as counting observations etc.
+
+ggplot(
+  data = iris,
+  aes(
+    x = Petal.Length,
+    y = Petal.Width)) +
+  geom_bar( stat = "identity",
+            fill = "pink")+
+  ggtitle("ggplot") +
+  xlab("Petal Length") +
+  ylab ("Petal Width")
+
+#If you want the heights of the bars to represent values in the data, 
+#use stat="identity" and map a value to the y aesthetic.
+
+# density plot 
+ggplot(
+  data = iris,
+  aes(
+    x = Petal.Length,
+    y = Petal.Width)) +
+  geom_density_2d(mapping = NULL, data = NULL, stat = "density2d",
+                  position = "identity", lineend = "butt", linejoin = "round",
+                  linemitre = 1, na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)+
+  ggtitle("ggplot") +
+  xlab("Petal Length") +
+  ylab ("Petal Width")
+
+# each stat creates additional variables to map aesthetics to. These variables use
+# a common ..name.. syntax.
+?geom_density2d
+?levels
+
+ggplot(
+  data = iris,
+  aes(
+    x = Petal.Length,
+    y = Petal.Width)) +
+  stat_density2d(aes(fill=..level..),geom = "polygon",n=100)
+  ggtitle("ggplot") +
+  xlab("Petal Length") +
+  ylab ("Petal Width")
+  
+  # 1D dimensions
+  # stat_bin, stat_bindot,stat_density
+  
+  #stat_bin is suitable only for continuous x data. 
+  #If your x data is discrete, you probably want to use stat_count.
+
+   ?stat_bin
+  
+  ggplot(
+    data = iris,
+    aes(
+      x = Petal.Length)) +
+    stat_bin(mapping = NULL, data = NULL, geom = "bar", position = "stack",
+           binwidth = 1, bins = 40, center = NULL, boundary = NULL,
+             breaks = NULL, closed = c("right", "left"), pad = FALSE,
+             na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)+
+  ggtitle("ggplot") +
+    xlab("Petal Length") +
+    ylab ("Value")
+  
+
+  ggplot(
+    data = iris,
+    aes(
+      x = Petal.Length)) +
+    stat_density(mapping = NULL, data = NULL, geom = "area",
+                 position = "stack", bw = "nrd0", adjust = 1, kernel = "gaussian",
+                 n = 512, trim = FALSE, na.rm = FALSE, show.legend = NA,
+                 inherit.aes = TRUE)+
+    ggtitle("ggplot") +
+    xlab("Petal Length") +
+    ylab ("Value")
+  
+  
+  
+  
+
+  #geom_spoke
+ #It is useful when you have variables that describe direction and distance. 
+  
+  
+ 
+  
+  
+  
